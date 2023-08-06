@@ -1,7 +1,30 @@
-const Navbar = () => {
+import { NavLink } from "react-router-dom";
+import cx from "classnames";
+import useCleaningList from "../hooks/useCleaningList";
+import SearchInput from "./inputs/SearchInput";
+import { ComponentProps } from "react";
+
+interface ActiveNavLinkProps extends ComponentProps<typeof NavLink> {}
+
+const ActiveNavLink = (props: ActiveNavLinkProps) => {
   return (
-    <nav className="bg-gray-800 w-full">
-      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <NavLink
+      className={({ isActive }) => {
+        return cx(
+          "text-white px-3 py-2 rounded-md text-sm font-medium",
+          isActive ? "bg-gray-900" : "bg-transparent"
+        );
+      }}
+      {...props}
+    />
+  );
+};
+
+const Navbar = () => {
+  const { count } = useCleaningList();
+  return (
+    <nav className="bg-gray-800 w-full fixed z-50">
+      <div className="container mx-auto">
         <div className="relative flex items-center justify-between h-16">
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex-shrink-0">
@@ -11,29 +34,24 @@ const Navbar = () => {
                 alt="Workflow"
               />
             </div>
+            {/* <div className="ml-96">
+              <SearchInput label="Search for rooms" />
+            </div> */}
             <div className="hidden sm:block sm:ml-auto">
               <div className="flex space-x-4">
-                <a
-                  href="#"
-                  className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Explore
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-                >
-                  Occupancy
-                </a>
-                <a
-                  href="#"
+                <ActiveNavLink to="/">Explore</ActiveNavLink>
+                <ActiveNavLink to="/occupancy">Occupancy</ActiveNavLink>
+                <NavLink
+                  to="/cleaning-list"
                   className="text-gray-300 bg-gray-950 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-2xl text-sm font-medium shadow-gray-900 shadow-md relative"
                 >
-                  <span className="mr-2">Needs Cleaning</span>
-                  <span className="inline-flex h-5 w-5 items-center justify-center px-1 py-1 text-xs font-medium leading-none text-red-100 bg-red-600 circle absolute -top-1 -right-1 rounded-full">
-                    9
-                  </span>
-                </a>
+                  <span>✨ Needs Cleaning</span>
+                  {count ? (
+                    <span className="inline-flex ml-2 h-5 w-5 items-center justify-center px-1 py-1 text-xs font-medium leading-none text-red-100 bg-red-600 circle absolute -top-1 -right-1 rounded-full">
+                      {count}
+                    </span>
+                  ) : null}
+                </NavLink>
               </div>
             </div>
           </div>

@@ -3,13 +3,20 @@ import AddToCleaningListButton from "./buttons/AddToCleaningListButton";
 import Tag from "./Tag";
 import { IRoom } from "../interfaces/IRoom";
 
-interface CardProps extends IRoom {}
+interface CardProps extends IRoom {
+  handleAddToCleaningList: () => void;
+  handleRemoveFromCleaningList: () => void;
+  isAdded: boolean;
+}
 
 const Card: React.FC<CardProps> = ({
   image,
   category,
   room_number,
   description,
+  handleAddToCleaningList,
+  handleRemoveFromCleaningList,
+  isAdded,
 }) => {
   return (
     <div className="bg-gray-800 rounded-lg shadow-lg relative">
@@ -19,7 +26,13 @@ const Card: React.FC<CardProps> = ({
           <Tag text={category} />
         </div>
         <div className="absolute bottom-2 right-2">
-          <AddToCleaningListButton />
+          <AddToCleaningListButton
+            id={room_number}
+            isAdded={isAdded}
+            onClick={
+              isAdded ? handleRemoveFromCleaningList : handleAddToCleaningList
+            }
+          />
         </div>
       </div>
 
