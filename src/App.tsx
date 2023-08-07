@@ -36,7 +36,13 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <Suspense fallback="Loading...">
+    <Suspense
+      fallback={
+        <div className="w-full h-screen bg-gray-800 flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
       <RoomCleaningListContextProvider>
         <RouterProvider router={router} />
         <ToastContainer delay={3000} />
